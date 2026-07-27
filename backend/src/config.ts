@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 if (!process.env.MONGO_URI) {
-    throw new Error('monogUri is required in .env')
+    throw new Error('MONGO_URI is required in .env')
 }
 
 export const config = {
