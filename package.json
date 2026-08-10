@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@vizipp/video-call": "^0.2.1"
+  }
+}
