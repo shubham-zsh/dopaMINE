@@ -1,6 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
-import { OTP } from "../model/otp.ts";
 import bcrypt from 'bcrypt';
+import express, { NextFunction, Request, Response } from "express";
+import jwt from 'jsonwebtoken';
+import { config } from "../config.ts";
+import { OTP } from "../model/otp.ts";
+import { User } from "../model/user.ts";
 
 const router = express.Router();
 
@@ -61,10 +64,18 @@ router.post('/otp/verify', async (req: Request, res: Response, next: NextFunctio
             return res.send("invalid otp")
         }
 
+        let userExists = await User.findOne({ email })
+
+        if (!userExists) {
+            userExists = await User.create({ email })
+        }
+
+        const token = jwt.sign({ id: userExists._id }, config.jwtSecret, { expiresIn: '30d' });
+
         getOtp.used = true;
         await getOtp.save();
 
-        return res.send("logged in successfully")
+        return res.send({ token, msg: "logged in successfully" })
 
     } catch (err) {
         next(err)

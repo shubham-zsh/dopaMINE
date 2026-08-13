@@ -16,11 +16,11 @@ const userSchema = new Schema<userI>(
         },
         name: {
             type: String,
-            required: true,
+            required: false,
         },
         timezone: {
             type: String,
-            required: true,
+            required: false,
         }
     },
     {
@@ -29,5 +29,5 @@ const userSchema = new Schema<userI>(
 )
 
 export const User = model('User', userSchema);
- 
+
 
